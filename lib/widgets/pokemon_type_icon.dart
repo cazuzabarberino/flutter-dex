@@ -11,7 +11,7 @@ class PokemonTypeIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final typeData = pokemonTypeData[type] ?? pokemonTypeData["bug"]!;
+    final typeData = getPokemonTypeData(type);
 
     return Card(
       shape: const CircleBorder(),

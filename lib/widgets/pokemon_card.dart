@@ -24,8 +24,12 @@ class _PokemonCardState extends State<PokemonCard> {
   Future<void> getPokemon() async {
     final pokemonRes = await getPokemonById(widget.pokemonId);
     final colors = pokemonRes?.types
-        .map((e) => pokemonTypeData[e]!.color.lighten(.025))
+        .map((e) => getPokemonTypeData(e).color.lighten(.025))
         .toList();
+
+    if (colors != null && colors.length == 1) {
+      colors.add(colors[0].darken(.15));
+    }
 
     setState(() {
       _currentPokemon = pokemonRes;

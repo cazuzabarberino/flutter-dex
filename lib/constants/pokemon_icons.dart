@@ -10,7 +10,15 @@ class PokemonTypeData {
   final Color color;
 }
 
-const Map<String, PokemonTypeData> pokemonTypeData = {
+PokemonTypeData getPokemonTypeData(String type) {
+  return _pokemonTypeData[type] ??
+      const PokemonTypeData(
+        assetPath: "assets/pokemon_icons/bug.png",
+        color: Color.fromRGBO(132, 196, 0, 1),
+      );
+}
+
+const Map<String, PokemonTypeData> _pokemonTypeData = {
   "bug": PokemonTypeData(
     assetPath: "assets/pokemon_icons/bug.png",
     color: Color.fromRGBO(132, 196, 0, 1),

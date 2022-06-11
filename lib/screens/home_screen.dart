@@ -10,18 +10,18 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final pokemonIds = List.generate(1000, (i) => i + 1);
+
     return Scaffold(
       appBar: AppBar(title: const Text("Pokedex")),
       body: ListView.builder(
-        itemBuilder: (context, index) => PokemonCard(pokemonId: index + 1),
-        itemCount: 20,
+        itemExtent: 104,
+        itemBuilder: (context, index) => PokemonCard(
+          pokemonId: pokemonIds[index],
+          key: Key(pokemonIds[index].toString()),
+        ),
+        itemCount: pokemonIds.length,
       ),
     );
   }
