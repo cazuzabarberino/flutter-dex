@@ -76,6 +76,17 @@ class _PokemonCardState extends State<PokemonCard> {
                     )
                   ],
                 ),
+              ),
+              Positioned(
+                bottom: -8,
+                right: 0,
+                child: Text(
+                  "#${pokemon.id}",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4
+                      ?.copyWith(fontWeight: FontWeight.bold),
+                ),
               )
             ],
           ),
