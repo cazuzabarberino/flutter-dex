@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/screens/home_screen.dart';
+import 'package:pokedex/services/poke_api_service.dart';
 
-void main() {
+void main() async {
+  await pokeApiService.initService();
   runApp(const MyApp());
 }
 

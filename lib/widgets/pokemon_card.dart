@@ -22,7 +22,7 @@ class _PokemonCardState extends State<PokemonCard> {
   List<Color> _boxColors = [];
 
   Future<void> getPokemon() async {
-    final pokemonRes = await getPokemonById(widget.pokemonId);
+    final pokemonRes = await pokeApiService.getPokemonById(widget.pokemonId);
     final colors = pokemonRes?.types
         .map((e) => getPokemonTypeData(e).color.lighten(.025))
         .toList();

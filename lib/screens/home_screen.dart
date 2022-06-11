@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/services/poke_api_service.dart';
 import 'package:pokedex/widgets/pokemon_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,17 +12,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final pokemonIds = List.generate(1000, (i) => i + 1);
+    const firstId = 1;
+    final lastId = pokeApiService.getTotalPokemonSpecies();
 
     return Scaffold(
       appBar: AppBar(title: const Text("Pokedex")),
       body: ListView.builder(
         itemExtent: 104,
         itemBuilder: (context, index) => PokemonCard(
-          pokemonId: pokemonIds[index],
-          key: Key(pokemonIds[index].toString()),
+          pokemonId: index + firstId,
+          key: Key((index + firstId).toString()),
         ),
-        itemCount: pokemonIds.length,
+        itemCount: (lastId - firstId + 1),
       ),
     );
   }
