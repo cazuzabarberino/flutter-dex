@@ -1,11 +1,9 @@
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
-import 'package:pokedex/constants/pokemon_icons.dart';
 import 'package:pokedex/models/pokemon.dart';
 import 'package:pokedex/screens/poke_details_screen.dart';
 import 'package:pokedex/services/poke_api_service.dart';
 import 'package:pokedex/utils/captalize.dart';
-import 'package:pokedex/utils/color_manipulation.dart';
 import 'package:pokedex/widgets/pokemon_type_icon.dart';
 
 class PokemonCard extends StatefulWidget {
@@ -20,21 +18,12 @@ class PokemonCard extends StatefulWidget {
 class _PokemonCardState extends State<PokemonCard> {
   Pokemon? _currentPokemon;
   CancelableOperation<void>? _getPokemonOperation;
-  List<Color> _boxColors = [];
 
   Future<void> getPokemon() async {
     final pokemonRes = await pokeApiService.getPokemonById(widget.pokemonId);
-    final colors = pokemonRes?.types
-        .map((e) => getPokemonTypeData(e).color.lighten(.025))
-        .toList();
-
-    if (colors != null && colors.length == 1) {
-      colors.add(colors[0].darken(.15));
-    }
 
     setState(() {
       _currentPokemon = pokemonRes;
-      _boxColors = colors ?? [];
     });
   }
 
@@ -80,12 +69,11 @@ class _PokemonCardState extends State<PokemonCard> {
           height: 96,
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
-            color: _boxColors.length == 1 ? _boxColors[0] : null,
-            gradient: _boxColors.length >= 2
+            gradient: (pokemon != null)
                 ? LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: _boxColors,
+                    colors: pokemon.boxColors,
                   )
                 : null,
           ),

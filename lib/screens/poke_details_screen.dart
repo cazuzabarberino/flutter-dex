@@ -20,7 +20,13 @@ class PokemonDetailsScreen extends StatelessWidget {
             clipper: ArcClipper(),
             child: Container(
               padding: const EdgeInsets.only(bottom: 48),
-              color: Colors.red,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: pokemon.boxColors,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
               child: Hero(
                 tag: pokemon.name,
                 child: Image.network(pokemon.imageUrl),
