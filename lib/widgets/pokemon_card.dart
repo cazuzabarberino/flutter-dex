@@ -2,6 +2,7 @@ import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex/constants/pokemon_icons.dart';
 import 'package:pokedex/models/pokemon.dart';
+import 'package:pokedex/screens/poke_details_screen.dart';
 import 'package:pokedex/services/poke_api_service.dart';
 import 'package:pokedex/utils/captalize.dart';
 import 'package:pokedex/utils/color_manipulation.dart';
@@ -52,10 +53,67 @@ class _PokemonCardState extends State<PokemonCard> {
     super.dispose();
   }
 
+  void goToPokemonDetails(Pokemon? pokemon, BuildContext context) {
+    if (pokemon == null) return;
+    Navigator.pushNamed(
+      context,
+      PokemonDetailsScreen.routeName,
+      arguments: pokemon,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final Pokemon? pokemon = _currentPokemon;
+
+    return GestureDetector(
+      onTap: () => goToPokemonDetails(pokemon, context),
+      child: Card(
+        margin: const EdgeInsets.symmetric(
+          horizontal: 8,
+          vertical: 8,
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        elevation: 4,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Container(
+          height: 96,
+          padding: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            color: _boxColors.length == 1 ? _boxColors[0] : null,
+            gradient: _boxColors.length >= 2
+                ? LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: _boxColors,
+                  )
+                : null,
+          ),
+          child: pokemon == null
+              ? const Center(child: CircularProgressIndicator())
+              : _buildPokemonCardContent(pokemon),
+        ),
+      ),
+    );
+  }
+
   Widget _buildPokemonCardContent(Pokemon pokemon) {
     return Row(
       children: [
-        Image.network(pokemon.imageUrl),
+        SizedBox(
+          width: 96,
+          height: 96,
+          child: Hero(
+            tag: pokemon.name,
+            child: Image.network(
+              pokemon.imageUrl,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return const Center(child: CircularProgressIndicator());
+              },
+            ),
+          ),
+        ),
         const SizedBox(width: 8),
         Expanded(
           child: Stack(
@@ -72,6 +130,9 @@ class _PokemonCardState extends State<PokemonCard> {
                           .textTheme
                           .headline4
                           ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 4,
                     ),
                     Row(
                       children: pokemon.types
@@ -96,34 +157,6 @@ class _PokemonCardState extends State<PokemonCard> {
           ),
         ),
       ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final Pokemon? pokemon = _currentPokemon;
-
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      elevation: 2,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: Container(
-        padding: const EdgeInsets.all(4),
-        height: 96,
-        decoration: BoxDecoration(
-          color: _boxColors.length == 1 ? _boxColors[0] : null,
-          gradient: _boxColors.length >= 2
-              ? LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: _boxColors,
-                )
-              : null,
-        ),
-        child: pokemon == null
-            ? const Text("Loading...")
-            : _buildPokemonCardContent(pokemon),
-      ),
     );
   }
 }

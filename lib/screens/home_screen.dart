@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text("Pokedex")),
       body: ListView.builder(
-        itemExtent: 104,
+        itemExtent: 112,
         itemBuilder: (context, index) => PokemonCard(
           pokemonId: index + firstId,
           key: Key((index + firstId).toString()),
