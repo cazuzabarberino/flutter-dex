@@ -14,10 +14,41 @@ class PokemonDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(pokemon.name),
       ),
-      body: Hero(
-        tag: pokemon.name,
-        child: Image.network(pokemon.imageUrl),
+      body: ListView(
+        children: [
+          ClipPath(
+            clipper: ArcClipper(),
+            child: Container(
+              padding: const EdgeInsets.only(bottom: 48),
+              color: Colors.red,
+              child: Hero(
+                tag: pokemon.name,
+                child: Image.network(pokemon.imageUrl),
+              ),
+            ),
+          )
+        ],
       ),
     );
+  }
+}
+
+class ArcClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    final double arcHeight = size.height > 48 ? 48 : size.height;
+    path
+      ..lineTo(size.width, 0)
+      ..lineTo(size.width, size.height - arcHeight)
+      ..quadraticBezierTo(
+          size.width / 2, size.height, 0, size.height - arcHeight)
+      ..lineTo(0, 0);
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return false;
   }
 }
