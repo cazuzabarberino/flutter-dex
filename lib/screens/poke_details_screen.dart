@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/models/pokemon.dart';
+import 'package:pokedex/utils/captalize.dart';
+import 'package:pokedex/widgets/pokemon_type_row.dart';
 
 class PokemonDetailsScreen extends StatelessWidget {
   static const String routeName = "/pokemon-details";
@@ -19,7 +21,12 @@ class PokemonDetailsScreen extends StatelessWidget {
           ClipPath(
             clipper: ArcClipper(),
             child: Container(
-              padding: const EdgeInsets.only(bottom: 48),
+              padding: const EdgeInsets.only(
+                bottom: 48,
+                top: 16,
+                left: 16,
+                right: 16,
+              ),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: pokemon.boxColors,
@@ -27,9 +34,43 @@ class PokemonDetailsScreen extends StatelessWidget {
                   end: Alignment.bottomRight,
                 ),
               ),
-              child: Hero(
-                tag: pokemon.name,
-                child: Image.network(pokemon.imageUrl),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "#${pokemon.id}",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline5
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  Hero(
+                    tag: "${pokemon.name}-title",
+                    child: Text(
+                      pokemon.name.captalize(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Hero(
+                    tag: "${pokemon.name}-types",
+                    child: PokemonTypeRow(
+                      types: pokemon.types,
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Hero(
+                      tag: "${pokemon.name}-image",
+                      child: Image.network(
+                        pokemon.imageUrl,
+                        height: 256,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           )

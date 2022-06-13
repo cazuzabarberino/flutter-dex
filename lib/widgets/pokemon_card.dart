@@ -4,7 +4,7 @@ import 'package:pokedex/models/pokemon.dart';
 import 'package:pokedex/screens/poke_details_screen.dart';
 import 'package:pokedex/services/poke_api_service.dart';
 import 'package:pokedex/utils/captalize.dart';
-import 'package:pokedex/widgets/pokemon_type_icon.dart';
+import 'package:pokedex/widgets/pokemon_type_row.dart';
 
 class PokemonCard extends StatefulWidget {
   const PokemonCard({Key? key, required this.pokemonId}) : super(key: key);
@@ -92,7 +92,7 @@ class _PokemonCardState extends State<PokemonCard> {
           width: 96,
           height: 96,
           child: Hero(
-            tag: pokemon.name,
+            tag: "${pokemon.name}-image",
             child: Image.network(
               pokemon.imageUrl,
               loadingBuilder: (context, child, loadingProgress) {
@@ -112,20 +112,24 @@ class _PokemonCardState extends State<PokemonCard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      pokemon.name.captalize(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline4
-                          ?.copyWith(fontWeight: FontWeight.bold),
+                    Hero(
+                      tag: "${pokemon.name}-title",
+                      child: Text(
+                        pokemon.name.captalize(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
                     ),
                     const SizedBox(
                       height: 4,
                     ),
-                    Row(
-                      children: pokemon.types
-                          .map((e) => PokemonTypeIcon(type: e))
-                          .toList(),
+                    Hero(
+                      tag: "${pokemon.name}-types",
+                      child: PokemonTypeRow(
+                        types: pokemon.types,
+                      ),
                     )
                   ],
                 ),
