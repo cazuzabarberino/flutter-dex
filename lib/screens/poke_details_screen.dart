@@ -18,61 +18,75 @@ class PokemonDetailsScreen extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          ClipPath(
-            clipper: ArcClipper(),
-            child: Container(
-              padding: const EdgeInsets.only(
-                bottom: 48,
-                top: 16,
-                left: 16,
-                right: 16,
-              ),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: pokemon.boxColors,
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "#${pokemon.id}",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  Hero(
-                    tag: "${pokemon.name}-title",
-                    child: Text(
-                      pokemon.name.captalize(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline4
-                          ?.copyWith(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Hero(
-                    tag: "${pokemon.name}-types",
-                    child: PokemonTypeRow(
-                      types: pokemon.types,
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Hero(
-                      tag: "${pokemon.name}-image",
-                      child: Image.network(
-                        pokemon.imageUrl,
-                        height: 256,
+          Stack(
+            children: [
+              Positioned.fill(
+                child: Hero(
+                  tag: "${pokemon.name}-teste",
+                  child: ClipPath(
+                    clipper: ArcClipper(),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: pokemon.boxColors,
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
                       ),
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 48,
+                  top: 16,
+                  left: 16,
+                  right: 16,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Hero(
+                      tag: "${pokemon.name}-id",
+                      child: Text(
+                        "#${pokemon.id}",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Hero(
+                      tag: "${pokemon.name}-title",
+                      child: Text(
+                        pokemon.name.captalize(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Hero(
+                      tag: "${pokemon.name}-types",
+                      child: PokemonTypeRow(
+                        types: pokemon.types,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Hero(
+                        tag: "${pokemon.name}-image",
+                        child: Image.network(
+                          pokemon.imageUrl,
+                          height: 256,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
           )
         ],
       ),

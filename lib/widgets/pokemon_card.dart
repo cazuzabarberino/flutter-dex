@@ -57,30 +57,41 @@ class _PokemonCardState extends State<PokemonCard> {
 
     return GestureDetector(
       onTap: () => goToPokemonDetails(pokemon, context),
-      child: Card(
-        margin: const EdgeInsets.symmetric(
-          horizontal: 8,
-          vertical: 8,
-        ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        elevation: 4,
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        child: Container(
-          height: 96,
-          padding: const EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            gradient: (pokemon != null)
-                ? LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: pokemon.boxColors,
-                  )
-                : null,
+      child: Stack(
+        children: [
+          Hero(
+            tag: "${pokemon?.name ?? "loading"}-teste",
+            child: Card(
+              margin: const EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 8,
+              ),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
+              elevation: 4,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: (pokemon != null)
+                      ? LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: pokemon.boxColors,
+                        )
+                      : null,
+                ),
+              ),
+            ),
           ),
-          child: pokemon == null
-              ? const Center(child: CircularProgressIndicator())
-              : _buildPokemonCardContent(pokemon),
-        ),
+          Container(
+            height: 96,
+            margin: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(4),
+            child: pokemon == null
+                ? const Center(child: CircularProgressIndicator())
+                : _buildPokemonCardContent(pokemon),
+          ),
+        ],
       ),
     );
   }
@@ -137,12 +148,15 @@ class _PokemonCardState extends State<PokemonCard> {
               Positioned(
                 bottom: -8,
                 right: 0,
-                child: Text(
-                  "#${pokemon.id}",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4
-                      ?.copyWith(fontWeight: FontWeight.bold),
+                child: Hero(
+                  tag: "${pokemon.name}-id",
+                  child: Text(
+                    "#${pokemon.id}",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline4
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
                 ),
               )
             ],
