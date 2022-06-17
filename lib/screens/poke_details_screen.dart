@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/models/pokemon.dart';
 import 'package:pokedex/utils/captalize.dart';
+import 'package:pokedex/widgets/pokemon_card_title.dart';
 import 'package:pokedex/widgets/pokemon_type_row.dart';
 
 class PokemonDetailsScreen extends StatelessWidget {
@@ -37,25 +38,16 @@ class PokemonDetailsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "#${pokemon.id}",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5
-                        ?.copyWith(fontWeight: FontWeight.bold),
+                  Hero(
+                    tag: "${pokemon.id}-id",
+                    child: PokemonCardTitle(text: "#${pokemon.id}"),
                   ),
                   Hero(
-                    tag: "${pokemon.name}-title",
-                    child: Text(
-                      pokemon.name.captalize(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline4
-                          ?.copyWith(fontWeight: FontWeight.bold),
-                    ),
+                    tag: "${pokemon.id}-title",
+                    child: PokemonCardTitle(text: pokemon.name.captalize()),
                   ),
                   Hero(
-                    tag: "${pokemon.name}-types",
+                    tag: "${pokemon.id}-types",
                     child: PokemonTypeRow(
                       types: pokemon.types,
                     ),
@@ -63,7 +55,7 @@ class PokemonDetailsScreen extends StatelessWidget {
                   Align(
                     alignment: Alignment.center,
                     child: Hero(
-                      tag: "${pokemon.name}-image",
+                      tag: "${pokemon.id}-image",
                       child: Image.network(
                         pokemon.imageUrl,
                         height: 256,

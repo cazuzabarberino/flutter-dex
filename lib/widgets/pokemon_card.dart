@@ -4,6 +4,7 @@ import 'package:pokedex/models/pokemon.dart';
 import 'package:pokedex/screens/poke_details_screen.dart';
 import 'package:pokedex/services/poke_api_service.dart';
 import 'package:pokedex/utils/captalize.dart';
+import 'package:pokedex/widgets/pokemon_card_title.dart';
 import 'package:pokedex/widgets/pokemon_type_row.dart';
 
 class PokemonCard extends StatefulWidget {
@@ -92,7 +93,7 @@ class _PokemonCardState extends State<PokemonCard> {
           width: 96,
           height: 96,
           child: Hero(
-            tag: "${pokemon.name}-image",
+            tag: "${pokemon.id}-image",
             child: Image.network(
               pokemon.imageUrl,
               loadingBuilder: (context, child, loadingProgress) {
@@ -113,20 +114,14 @@ class _PokemonCardState extends State<PokemonCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Hero(
-                      tag: "${pokemon.name}-title",
-                      child: Text(
-                        pokemon.name.captalize(),
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline4
-                            ?.copyWith(fontWeight: FontWeight.bold),
-                      ),
+                      tag: "${pokemon.id}-title",
+                      child: PokemonCardTitle(text: pokemon.name.captalize()),
                     ),
                     const SizedBox(
                       height: 4,
                     ),
                     Hero(
-                      tag: "${pokemon.name}-types",
+                      tag: "${pokemon.id}-types",
                       child: PokemonTypeRow(
                         types: pokemon.types,
                       ),
@@ -137,12 +132,9 @@ class _PokemonCardState extends State<PokemonCard> {
               Positioned(
                 bottom: -8,
                 right: 0,
-                child: Text(
-                  "#${pokemon.id}",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4
-                      ?.copyWith(fontWeight: FontWeight.bold),
+                child: Hero(
+                  tag: "${pokemon.id}-id",
+                  child: PokemonCardTitle(text: "#${pokemon.id}"),
                 ),
               )
             ],
